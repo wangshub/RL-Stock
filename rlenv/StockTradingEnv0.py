@@ -42,9 +42,6 @@ class StockTradingEnv(gym.Env):
             self.df.loc[self.current_step: self.current_step + 5, 'Volume'].values / MAX_NUM_SHARES,
         ])
 
-        print(f'step {self.current_step}')
-        print('frame.shape', frame.shape)
-
         # Append additional data and scale each value to between 0-1
         obs = np.append(frame, [[
             self.balance / MAX_ACCOUNT_BALANCE,
@@ -54,8 +51,6 @@ class StockTradingEnv(gym.Env):
             self.total_shares_sold / MAX_NUM_SHARES,
             self.total_sales_value / (MAX_NUM_SHARES * MAX_SHARE_PRICE),
         ]], axis=0)
-
-        print(obs)
 
         return obs
 
