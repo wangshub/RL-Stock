@@ -10,6 +10,7 @@ MAX_NUM_SHARES = 2147483647
 MAX_SHARE_PRICE = 5000
 MAX_OPEN_POSITIONS = 5
 MAX_STEPS = 20000
+MAX_DAY_CHANGE = 1
 
 INITIAL_ACCOUNT_BALANCE = 10000
 
@@ -30,7 +31,7 @@ class StockTradingEnv(gym.Env):
 
         # Prices contains the OHCL values for the last five prices
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(6, 6), dtype=np.float16)
+            low=0, high=1, shape=(7, 6), dtype=np.float16)
 
     def _next_observation(self):
         # Get the stock data points for the last 5 days and scale to between 0-1
@@ -40,6 +41,7 @@ class StockTradingEnv(gym.Env):
             self.df.loc[self.current_step: self.current_step + 5, 'Low'].values / MAX_SHARE_PRICE,
             self.df.loc[self.current_step: self.current_step + 5, 'Close'].values / MAX_SHARE_PRICE,
             self.df.loc[self.current_step: self.current_step + 5, 'Volume'].values / MAX_NUM_SHARES,
+            self.df.loc[self.current_step: self.current_step + 5, 'Change'].values / MAX_DAY_CHANGE,
         ])
 
         # Append additional data and scale each value to between 0-1
