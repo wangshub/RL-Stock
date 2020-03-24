@@ -10,9 +10,9 @@ from rlenv.StockTradingEnv0 import StockTradingEnv
 
 import pandas as pd
 
-df = pd.read_csv('./data/600519.csv')
+df = pd.read_csv('./stockdata/sz.000725.京东方A.csv')
 # df = pd.read_csv('./data/AAPL.csv')
-# df = df.sort_values('Date')
+df = df.sort_values('date')
 
 # The algorithms require a vectorized environment to run
 env = DummyVecEnv([lambda: StockTradingEnv(df)])

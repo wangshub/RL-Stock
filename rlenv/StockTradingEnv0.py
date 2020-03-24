@@ -8,6 +8,8 @@ import numpy as np
 MAX_ACCOUNT_BALANCE = 2147483647
 MAX_NUM_SHARES = 2147483647
 MAX_SHARE_PRICE = 5000
+MAX_VOLUME = 1000e8
+MAX_AMOUNT = 3e10
 MAX_OPEN_POSITIONS = 5
 MAX_STEPS = 20000
 MAX_DAY_CHANGE = 1
@@ -31,17 +33,24 @@ class StockTradingEnv(gym.Env):
 
         # Prices contains the OHCL values for the last five prices
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(7, 6), dtype=np.float16)
+            low=0, high=1, shape=(14, 6), dtype=np.float16)
 
     def _next_observation(self):
         # Get the stock data points for the last 5 days and scale to between 0-1
         frame = np.array([
-            self.df.loc[self.current_step: self.current_step + 5, 'Open'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'High'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'Low'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'Close'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'Volume'].values / MAX_NUM_SHARES,
-            self.df.loc[self.current_step: self.current_step + 5, 'Change'].values / MAX_DAY_CHANGE,
+            self.df.loc[self.current_step: self.current_step + 5, 'open'].values / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step: self.current_step + 5, 'high'].values / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step: self.current_step + 5, 'low'].values / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step: self.current_step + 5, 'close'].values / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step: self.current_step + 5, 'volume'].values / MAX_VOLUME,
+            self.df.loc[self.current_step: self.current_step + 5, 'amount'].values / MAX_AMOUNT,
+            self.df.loc[self.current_step: self.current_step + 5, 'adjustflag'].values / 10,
+            self.df.loc[self.current_step: self.current_step + 5, 'tradestatus'].values / 1,
+            self.df.loc[self.current_step: self.current_step + 5, 'pctChg'].values / 100,
+            self.df.loc[self.current_step: self.current_step + 5, 'peTTM'].values / 1e4,
+            self.df.loc[self.current_step: self.current_step + 5, 'pbMRQ'].values / 100,
+            self.df.loc[self.current_step: self.current_step + 5, 'psTTM'].values / 100,
+            self.df.loc[self.current_step: self.current_step + 5, 'pctChg'].values / 1e3,
         ])
 
         # Append additional data and scale each value to between 0-1
@@ -59,7 +68,7 @@ class StockTradingEnv(gym.Env):
     def _take_action(self, action):
         # Set the current price to a random price within the time step
         current_price = random.uniform(
-            self.df.loc[self.current_step, "Open"], self.df.loc[self.current_step, "Close"])
+            self.df.loc[self.current_step, "open"], self.df.loc[self.current_step, "close"])
 
         action_type = action[0]
         amount = action[1]
@@ -98,7 +107,7 @@ class StockTradingEnv(gym.Env):
 
         self.current_step += 1
 
-        if self.current_step > len(self.df.loc[:, 'Open'].values) - 6:
+        if self.current_step > len(self.df.loc[:, 'open'].values) - 6:
             self.current_step = 0
 
         delay_modifier = (self.current_step / MAX_STEPS)
@@ -122,7 +131,7 @@ class StockTradingEnv(gym.Env):
 
         # Set the current step to a random point within the data frame
         self.current_step = random.randint(
-            0, len(self.df.loc[:, 'Open'].values) - 6)
+            0, len(self.df.loc[:, 'open'].values) - 6)
 
         return self._next_observation()
 
