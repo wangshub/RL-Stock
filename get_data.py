@@ -39,21 +39,21 @@ class Downloader(object):
         stock_rs = bs.query_all_stock(date)
         stock_df = stock_rs.get_data()
         print(stock_df)
-        return stock_df["code"]
+        return stock_df
 
     def run(self):
-        codes = self.get_codes_by_date(self.date_end)
-        for code in codes:
-            print(f'processing {code}')
-            df_code = bs.query_history_k_data_plus(code, self.fields,
+        stock_df = self.get_codes_by_date(self.date_end)
+        for index, row in stock_df.iterrows():
+            print(f'processing {row["code"]} {row["code_name"]}')
+            df_code = bs.query_history_k_data_plus(row["code"], self.fields,
                                                    start_date=self.date_start,
                                                    end_date=self.date_end).get_data()
-            df_code.to_csv(f'{OUTPUT}/{code}.csv', index=False)
+            df_code.to_csv(f'{OUTPUT}/{row["code"]}.{row["code_name"]}.csv', index=False)
         self.exit()
 
 
 if __name__ == '__main__':
-    # 获取指定日期全部股票的日K线数据
+    # 获取全部股票的日K线数据
     downloader = Downloader()
     downloader.run()
     # downloader.get_codes_by_date('2020-03-23')
