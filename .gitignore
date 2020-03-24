@@ -1,6 +1,7 @@
 # added by gitignore-cli
 
 .idea
+stockdata
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
