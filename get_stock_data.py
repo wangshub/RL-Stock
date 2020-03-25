@@ -1,23 +1,7 @@
 import baostock as bs
 import pandas as pd
-import datetime
 
 OUTPUT = './stockdata'
-
-
-def download_all_stock_day_k(date):
-    bs.login()
-
-    # 获取指定日期的指数、股票数据
-    stock_rs = bs.query_all_stock(date)
-    stock_df = stock_rs.get_data()
-    data_df = pd.DataFrame()
-    for code in stock_df["code"]:
-        print("Downloading :" + code)
-        k_rs = bs.query_history_k_data_plus(code, "date,code,open,high,low,close", date, date)
-        data_df = data_df.append(k_rs.get_data())
-    bs.logout()
-    data_df.to_csv(f"{OUTPUT}/{date}.csv", encoding="gbk", index=False)
 
 
 class Downloader(object):

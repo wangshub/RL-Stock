@@ -140,16 +140,12 @@ class StockTradingEnv(gym.Env):
 
         # profits
         reward = self.net_worth - INITIAL_ACCOUNT_BALANCE
+        reward = 1 if reward > 0 else -100
+
         if self.net_worth <= 0:
             done = True
 
         obs = self._next_observation()
-
-        # print(f'{self.current_step} reward = {int(reward)} max obs {obs.max()}')
-        if reward > 0:
-            reward = 1
-        elif reward < 0:
-            reward = -100
 
         return obs, reward, done, {}
 
