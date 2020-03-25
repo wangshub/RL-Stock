@@ -10,7 +10,7 @@ from rlenv.StockTradingEnv0 import StockTradingEnv
 
 import pandas as pd
 
-df = pd.read_csv('./stockdata/sz.000725.京东方A.csv')
+df = pd.read_csv('./stockdata/train/sz.000725.京东方A.csv')
 # df = pd.read_csv('./data/AAPL.csv')
 df = df.sort_values('date')
 

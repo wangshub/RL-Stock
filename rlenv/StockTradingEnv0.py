@@ -119,7 +119,7 @@ class StockTradingEnv(gym.Env):
 
         return obs, reward, done, {}
 
-    def reset(self):
+    def reset(self, new_df=None):
         # Reset the state of the environment to an initial state
         self.balance = INITIAL_ACCOUNT_BALANCE
         self.net_worth = INITIAL_ACCOUNT_BALANCE
@@ -129,9 +129,14 @@ class StockTradingEnv(gym.Env):
         self.total_shares_sold = 0
         self.total_sales_value = 0
 
+        # pass test dataset to environment
+        if new_df:
+            self.df = new_df
+
         # Set the current step to a random point within the data frame
-        self.current_step = random.randint(
-            0, len(self.df.loc[:, 'open'].values) - 6)
+        # self.current_step = random.randint(
+        #     0, len(self.df.loc[:, 'open'].values) - 6)
+        self.current_step = 0
 
         return self._next_observation()
 

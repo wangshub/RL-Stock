@@ -21,12 +21,16 @@ def download_all_stock_day_k(date):
 
 
 class Downloader(object):
-    def __init__(self):
+    def __init__(self,
+                 output_dir,
+                 date_start='1990-01-01',
+                 date_end='2020-03-23'):
         self._bs = bs
         bs.login()
-        self.date_start = '1990-01-01'
+        self.date_start = date_start
         # self.date_end = datetime.datetime.now().strftime("%Y-%m-%d")
-        self.date_end = '2020-03-23'
+        self.date_end = date_end
+        self.output_dir = output_dir
         self.fields = "date,code,open,high,low,close,volume,amount," \
                       "adjustflag,turn,tradestatus,pctChg,peTTM," \
                       "pbMRQ,psTTM,pcfNcfTTM,isST"
@@ -48,12 +52,15 @@ class Downloader(object):
             df_code = bs.query_history_k_data_plus(row["code"], self.fields,
                                                    start_date=self.date_start,
                                                    end_date=self.date_end).get_data()
-            df_code.to_csv(f'{OUTPUT}/{row["code"]}.{row["code_name"]}.csv', index=False)
+            df_code.to_csv(f'{self.output_dir}/{row["code"]}.{row["code_name"]}.csv', index=False)
         self.exit()
 
 
 if __name__ == '__main__':
     # 获取全部股票的日K线数据
-    downloader = Downloader()
+    downloader = Downloader('./stockdata/train', date_start='1990-01-01', date_end='2019-11-29')
     downloader.run()
-    # downloader.get_codes_by_date('2020-03-23')
+
+    downloader = Downloader('./stockdata/test', date_start='2019-12-01', date_end='2019-12-31')
+    downloader.run()
+
