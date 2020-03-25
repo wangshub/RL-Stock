@@ -145,7 +145,7 @@ class StockTradingEnv(gym.Env):
 
         obs = self._next_observation()
 
-        print(f'{self.current_step} reward = {int(reward)} max obs {obs.max()}')
+        # print(f'{self.current_step} reward = {int(reward)} max obs {obs.max()}')
         if reward > 0:
             reward = 1
         elif reward < 0:
