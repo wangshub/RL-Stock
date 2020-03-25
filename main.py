@@ -17,7 +17,7 @@ model.learn(total_timesteps=20000)
 
 df_test = pd.read_csv(f'./stockdata/test/{stock}')
 obs = env.reset()
-for i in range(2000):
+for i in range(len(df_test)):
     action, _states = model.predict(obs)
     obs, rewards, done, info = env.step(action)
     env.render()
