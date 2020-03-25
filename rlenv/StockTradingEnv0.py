@@ -133,12 +133,14 @@ class StockTradingEnv(gym.Env):
         self.current_step += 1
 
         if self.current_step > len(self.df.loc[:, 'open'].values) - 2:
-            # self.current_step = 0
-            done = True
+            self.current_step = 0  # loop training
+            # done = True
 
         delay_modifier = (self.current_step / MAX_STEPS)
 
-        reward = self.balance * delay_modifier
+        # profits
+        reward = self.net_worth - INITIAL_ACCOUNT_BALANCE
+        print(f'{self.current_step} reward = {reward}')
         if self.net_worth <= 0:
             done = True
 
@@ -170,7 +172,7 @@ class StockTradingEnv(gym.Env):
     def render(self, mode='human', close=False):
         # Render the environment to the screen
         profit = self.net_worth - INITIAL_ACCOUNT_BALANCE
-
+        print('-'*30)
         print(f'Step: {self.current_step}')
         print(f'Balance: {self.balance}')
         print(
