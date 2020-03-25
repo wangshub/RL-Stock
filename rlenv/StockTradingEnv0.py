@@ -33,9 +33,9 @@ class StockTradingEnv(gym.Env):
 
         # Prices contains the OHCL values for the last five prices
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(14, 6), dtype=np.float16)
+            low=0, high=1, shape=(19,), dtype=np.float16)
 
-    def _next_observation(self):
+    def _next_observation2(self):
         # Get the stock data points for the last 5 days and scale to between 0-1
         frame = np.array([
             self.df.loc[self.current_step: self.current_step + 5, 'open'].values / MAX_SHARE_PRICE,
@@ -63,6 +63,30 @@ class StockTradingEnv(gym.Env):
             self.total_sales_value / (MAX_NUM_SHARES * MAX_SHARE_PRICE),
         ]], axis=0)
 
+        return obs
+
+    def _next_observation(self):
+        obs = np.array([
+            self.df.loc[self.current_step, 'open'] / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step, 'high'] / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step, 'low'] / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step, 'close'] / MAX_SHARE_PRICE,
+            self.df.loc[self.current_step, 'volume'] / MAX_VOLUME,
+            self.df.loc[self.current_step, 'amount'] / MAX_AMOUNT,
+            self.df.loc[self.current_step, 'adjustflag'] / 10,
+            self.df.loc[self.current_step, 'tradestatus'] / 1,
+            self.df.loc[self.current_step, 'pctChg'] / 100,
+            self.df.loc[self.current_step, 'peTTM'] / 1e4,
+            self.df.loc[self.current_step, 'pbMRQ'] / 100,
+            self.df.loc[self.current_step, 'psTTM'] / 100,
+            self.df.loc[self.current_step, 'pctChg'] / 1e3,
+            self.balance / MAX_ACCOUNT_BALANCE,
+            self.max_net_worth / MAX_ACCOUNT_BALANCE,
+            self.shares_held / MAX_NUM_SHARES,
+            self.cost_basis / MAX_SHARE_PRICE,
+            self.total_shares_sold / MAX_NUM_SHARES,
+            self.total_sales_value / (MAX_NUM_SHARES * MAX_SHARE_PRICE),
+        ])
         return obs
 
     def _take_action(self, action):
@@ -108,7 +132,7 @@ class StockTradingEnv(gym.Env):
 
         self.current_step += 1
 
-        if self.current_step > len(self.df.loc[:, 'open'].values) - 7:
+        if self.current_step > len(self.df.loc[:, 'open'].values) - 2:
             # self.current_step = 0
             done = True
 

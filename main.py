@@ -21,3 +21,6 @@ for i in range(len(df_test)):
     action, _states = model.predict(obs)
     obs, rewards, done, info = env.step(action)
     env.render()
+    if done:
+        break
+
