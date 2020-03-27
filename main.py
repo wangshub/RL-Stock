@@ -1,4 +1,5 @@
 import os
+import pickle
 import pandas as pd
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
@@ -40,6 +41,7 @@ def stock_trade(stock_file):
 
 
 def find_file(path, name):
+    # print(path, name)
     for root, dirs, files in os.walk(path):
         for fname in files:
             if name in fname:
@@ -47,7 +49,7 @@ def find_file(path, name):
 
 
 def test_a_stock_trade(stock_code):
-    stock_file = find_file('./stockdata/train', stock_code)
+    stock_file = find_file('./stockdata/train', str(stock_code))
 
     daily_profits = stock_trade(stock_file)
     fig, ax = plt.subplots()
@@ -61,11 +63,24 @@ def test_a_stock_trade(stock_code):
 
 
 def multi_stock_trade():
-    pass
+    start_code = 600000
+    max_num = 3000
+
+    group_result = []
+
+    for code in range(start_code, start_code + max_num):
+        stock_file = find_file('./stockdata/train', str(code))
+        if stock_file:
+            profits = stock_trade(stock_file)
+            group_result.append(profits)
+
+    with open(f'code-{start_code}-{start_code + max_num}.pkl', 'wb') as f:
+        pickle.dump(group_result, f)
 
 
 if __name__ == '__main__':
-    test_a_stock_trade('sh.600036')
+    multi_stock_trade()
+    # test_a_stock_trade('sh.600036')
     # ret = find_file('./stockdata/train', '600036')
     # print(ret)
 

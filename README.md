@@ -99,14 +99,37 @@ reward = 1 if reward > 0 else reward = -100
 
 ### 验证结果
 
-#### 单只股票测试
+**单只股票**
 
-#### 单只股票多次测试
+- 初始本金 `10000`
+- 股票代码：`sh.600036`(招商银行)
+- 训练集： `stockdata/train/sh.600036.招商银行.csv`
+- 测试集： `stockdata/test/sh.600036.招商银行.csv`
+- 模拟操作 `20` 天，最终盈利约 `400`
 
-#### 多只股票测试
+<img src="img/sh.600036.png" alt="drawing" width="70%"/>
 
-## 结语
+**多只股票**
 
-欢迎指正！
+选取 `79` 只股票，进行训练，共计 
+
+- 盈利： `44.8%`
+- 不亏不赚： `49.0%`
+- 亏损：`6.3%`
+
+<img src="img/pie.png" alt="drawing" width="60%"/>
+
+<img src="img/hist.png" alt="drawing" width="60%"/>
+
+## 最后
+
+- 俺完全是股票没入门的新手，难免存在错误，欢迎指正！
+- 数据和方法皆来源于网络，无法保证有效性，**Just For Fun**！
 
 ## 参考资料
+
+- Y. Deng, F. Bao, Y. Kong, Z. Ren and Q. Dai, "Deep Direct Reinforcement Learning for Financial Signal Representation and Trading," in IEEE Transactions on Neural Networks and Learning Systems, vol. 28, no. 3, pp. 653-664, March 2017.
+- [Yuqin Dai, Chris Wang, Iris Wang, Yilun Xu, "Reinforcement Learning for FX trading"](http://stanford.edu/class/msande448/2019/Final_reports/gr2.pdf)
+- [Create custom gym environments from scratch — A stock market example](https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e)
+- [notadamking/Stock-Trading-Environment](https://github.com/notadamking/Stock-Trading-Environment)
+- Chien Yi Huang. Financial trading as a game: A deep reinforcement learning approach. arXiv preprint arXiv:1807.02787, 2018.
