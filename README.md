@@ -133,12 +133,12 @@ pip install -r requirements.txt
 
 <img src="img/hist.png" alt="drawing" width="60%"/>
 
-## 最后
+## 👻 最后
 
 - 俺完全是股票没入门的新手，难免存在错误，欢迎指正！
 - 数据和方法皆来源于网络，无法保证有效性，**Just For Fun**！
 
-## 参考资料
+## 📚 参考资料
 
 - Y. Deng, F. Bao, Y. Kong, Z. Ren and Q. Dai, "Deep Direct Reinforcement Learning for Financial Signal Representation and Trading," in IEEE Transactions on Neural Networks and Learning Systems, vol. 28, no. 3, pp. 653-664, March 2017.
 - [Yuqin Dai, Chris Wang, Iris Wang, Yilun Xu, "Reinforcement Learning for FX trading"](http://stanford.edu/class/msande448/2019/Final_reports/gr2.pdf)
