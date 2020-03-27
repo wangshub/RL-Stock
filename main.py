@@ -1,11 +1,21 @@
+import os
 import pandas as pd
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from rlenv.StockTradingEnv0 import StockTradingEnv
 
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+font = fm.FontProperties(fname='font/wqy-microhei.ttc')
+# plt.rc('font', family='Source Han Sans CN')
+plt.rcParams['axes.unicode_minus'] = False
+
 
 def stock_trade(stock_file):
+    day_profits = []
     df = pd.read_csv(stock_file)
     df = df.sort_values('date')
 
@@ -22,11 +32,40 @@ def stock_trade(stock_file):
     for i in range(len(df_test) - 1):
         action, _states = model.predict(obs)
         obs, rewards, done, info = env.step(action)
-        env.render()
-        print(action)
+        profit = env.render()
+        day_profits.append(profit)
         if done:
             break
+    return day_profits
+
+
+def find_file(path, name):
+    for root, dirs, files in os.walk(path):
+        for fname in files:
+            if name in fname:
+                return os.path.join(root, fname)
+
+
+def test_a_stock_trade(stock_code):
+    stock_file = find_file('./stockdata/train', stock_code)
+
+    daily_profits = stock_trade(stock_file)
+    fig, ax = plt.subplots()
+    ax.plot(daily_profits, '-o', label=stock_code, marker='o', ms=10, alpha=0.7, mfc='orange')
+    ax.grid()
+    plt.xlabel('step')
+    plt.ylabel('profit')
+    ax.legend(prop=font)
+    # plt.show()
+    plt.savefig(f'./img/{stock_code}.png')
+
+
+def multi_stock_trade():
+    pass
 
 
 if __name__ == '__main__':
-    stock_trade('./stockdata/train/sh.600036.招商银行.csv')
+    test_a_stock_trade('sh.600036')
+    # ret = find_file('./stockdata/train', '600036')
+    # print(ret)
+
