@@ -71,8 +71,11 @@ def multi_stock_trade():
     for code in range(start_code, start_code + max_num):
         stock_file = find_file('./stockdata/train', str(code))
         if stock_file:
-            profits = stock_trade(stock_file)
-            group_result.append(profits)
+            try:
+                profits = stock_trade(stock_file)
+                group_result.append(profits)
+            except Exception as err:
+                print(err)
 
     with open(f'code-{start_code}-{start_code + max_num}.pkl', 'wb') as f:
         pickle.dump(group_result, f)
