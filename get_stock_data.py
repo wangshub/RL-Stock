@@ -1,7 +1,14 @@
 import baostock as bs
 import pandas as pd
+import os
+
 
 OUTPUT = './stockdata'
+
+
+def mkdir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 
 class Downloader(object):
@@ -42,9 +49,11 @@ class Downloader(object):
 
 if __name__ == '__main__':
     # 获取全部股票的日K线数据
+    mkdir('./stockdata/train')
     downloader = Downloader('./stockdata/train', date_start='1990-01-01', date_end='2019-11-29')
     downloader.run()
 
+    mkdir('./stockdata/test')
     downloader = Downloader('./stockdata/test', date_start='2019-12-01', date_end='2019-12-31')
     downloader.run()
 
