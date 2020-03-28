@@ -35,36 +35,6 @@ class StockTradingEnv(gym.Env):
         self.observation_space = spaces.Box(
             low=0, high=1, shape=(19,), dtype=np.float16)
 
-    def _next_observation2(self):
-        # Get the stock data points for the last 5 days and scale to between 0-1
-        frame = np.array([
-            self.df.loc[self.current_step: self.current_step + 5, 'open'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'high'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'low'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'close'].values / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step: self.current_step + 5, 'volume'].values / MAX_VOLUME,
-            self.df.loc[self.current_step: self.current_step + 5, 'amount'].values / MAX_AMOUNT,
-            self.df.loc[self.current_step: self.current_step + 5, 'adjustflag'].values / 10,
-            self.df.loc[self.current_step: self.current_step + 5, 'tradestatus'].values / 1,
-            self.df.loc[self.current_step: self.current_step + 5, 'pctChg'].values / 100,
-            self.df.loc[self.current_step: self.current_step + 5, 'peTTM'].values / 1e4,
-            self.df.loc[self.current_step: self.current_step + 5, 'pbMRQ'].values / 100,
-            self.df.loc[self.current_step: self.current_step + 5, 'psTTM'].values / 100,
-            self.df.loc[self.current_step: self.current_step + 5, 'pctChg'].values / 1e3,
-        ])
-
-        # Append additional data and scale each value to between 0-1
-        obs = np.append(frame, [[
-            self.balance / MAX_ACCOUNT_BALANCE,
-            self.max_net_worth / MAX_ACCOUNT_BALANCE,
-            self.shares_held / MAX_NUM_SHARES,
-            self.cost_basis / MAX_SHARE_PRICE,
-            self.total_shares_sold / MAX_NUM_SHARES,
-            self.total_sales_value / (MAX_NUM_SHARES * MAX_SHARE_PRICE),
-        ]], axis=0)
-
-        return obs
-
     def _next_observation(self):
         obs = np.array([
             self.df.loc[self.current_step, 'open'] / MAX_SHARE_PRICE,
