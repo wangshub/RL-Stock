@@ -129,9 +129,9 @@ pip install -r requirements.txt
 - 不亏不赚： `46.5%`
 - 亏损：`9.0%`
 
-<img src="img/pie.png" alt="drawing" width="60%"/>
+<img src="img/pie.png" alt="drawing" width="50%"/>
 
-<img src="img/hist.png" alt="drawing" width="60%"/>
+<img src="img/hist.png" alt="drawing" width="50%"/>
 
 ## 👻 最后
 
