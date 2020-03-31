@@ -39,11 +39,21 @@ class Downloader(object):
     def run(self):
         stock_df = self.get_codes_by_date(self.date_end)
         for index, row in stock_df.iterrows():
-            print(f'processing {row["code"]} {row["code_name"]}')
-            df_code = bs.query_history_k_data_plus(row["code"], self.fields,
-                                                   start_date=self.date_start,
-                                                   end_date=self.date_end).get_data()
-            df_code.to_csv(f'{self.output_dir}/{row["code"]}.{row["code_name"]}.csv', index=False)
+            stock_code = row["code"]
+            stock_code_no = row["code"].replace('sh.','').replace('sz.','')
+
+            # 非上证的指数
+            if (stock_code.startswith('sh') and not stock_code_no.startswith('00')) or stock_code.startswith('sz.'):
+                if (stock_code_no.startswith('30') or stock_code_no.startswith('60') or stock_code_no.startswith('00')):
+                    code_name = row["code_name"].replace('*','')
+                    print(f'processing {stock_code} {code_name}')
+                    df_code = bs.query_history_k_data_plus(row["code"], self.fields,
+                                                           start_date=self.date_start,
+                                                           end_date=self.date_end,
+                                                           frequency="d",
+                                                           adjustflag="2"
+                                                           ).get_data()
+                    df_code.to_csv(f'{self.output_dir}/{stock_code}.{code_name}.csv', index=False)
         self.exit()
 
 
