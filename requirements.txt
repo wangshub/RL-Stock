@@ -32,7 +32,7 @@ prompt-toolkit==3.0.4
 protobuf==3.11.3
 ptyprocess==0.6.0
 pyglet==1.5.0
-Pygments==2.6.1
+Pygments==2.7.4
 pyparsing==2.4.6
 python-dateutil==2.8.1
 pytz==2019.3
