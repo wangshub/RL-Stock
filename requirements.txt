@@ -21,7 +21,7 @@ Keras-Preprocessing==1.1.0
 kiwisolver==1.1.0
 Markdown==3.2.1
 matplotlib==3.2.1
-numpy==1.18.2
+numpy==1.22.0
 opencv-python==4.2.0.32
 pandas==1.0.3
 parso==0.6.2
